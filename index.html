@@ -17,7 +17,7 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 .day.out{visibility:hidden}.day.today{outline:2px solid var(--plum)}
 .day.p{background:var(--red);color:#fff}.day.o{background:var(--purple);color:#fff}
 .day.pred{background:repeating-linear-gradient(45deg,#fde0e4,#fde0e4 4px,#fff 4px,#fff 8px);border:1.5px dashed var(--red)}
-.day.fert{box-shadow:inset 0 -4px 0 #c9b0ea}
+.day.fert{background:#efe6fa;color:#5b3d86}.day.eov{background:#f3ecfc;border:2px dashed var(--purple);color:var(--purple)}.ex{font-size:.52rem;line-height:1;font-weight:700;letter-spacing:.03em}
 .dots{display:flex;gap:2px;height:7px;margin-top:1px}.dots i{width:6px;height:6px;border-radius:50%}
 .legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:.8rem;margin-top:10px}.legend span{display:flex;align-items:center;gap:4px}.sw{width:13px;height:13px;border-radius:4px;display:inline-block}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--cream);border-radius:14px;padding:10px;text-align:center}.stat b{display:block;font-size:1.25rem;color:var(--rose)}.stat small{color:#9a6a80}
@@ -39,7 +39,7 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 <h1>Period Tracker</h1><div class="sub" id="greet">Be gentle with yourself today</div>
 <div class="card"><div class="mh"><button class="nav" id="prev" aria-label="previous">&#8249;</button><h2 id="mt"></h2><button class="nav" id="next" aria-label="next">&#8250;</button></div>
 <div class="grid" id="grid"></div>
-<div class="legend"><span><i class="sw" style="background:var(--red)"></i>Period</span><span><i class="sw" style="background:var(--purple)"></i>Ovulation</span><span><i class="sw" style="background:var(--pink)"></i>Intimacy &#9829;</span><span><i class="sw" style="border:1.5px dashed var(--red)"></i>Expected</span><span><i class="sw" style="background:#c9b0ea"></i>Fertile</span></div></div>
+<div class="legend"><span><i class="sw" style="background:var(--red)"></i>Period</span><span><i class="sw" style="background:var(--purple)"></i>Ovulation</span><span><i class="sw" style="background:var(--pink)"></i>Intimacy &#9829;</span><span><i class="sw" style="border:1.5px dashed var(--red)"></i>Expected period</span><span><i class="sw" style="border:1.5px dashed var(--purple);background:#f3ecfc"></i>Expected ovulation</span><span><i class="sw" style="background:#efe6fa"></i>Fertile window</span></div></div>
 <div class="card"><div class="stats" id="stats"></div><div id="notes"></div></div>
 <div class="card"><div class="mh"><button class="nav" id="yp">&#8249;</button><h2 id="yt"></h2><button class="nav" id="yn">&#8250;</button></div><div class="yr" id="yr" style="margin-top:10px"></div></div>
 <div class="card"><div class="row"><button class="btn" id="inst">Install App</button><button class="btn alt" id="bk">Backup</button><button class="btn alt" id="rs">Restore</button><input type="file" id="file" accept=".json,application/json" hidden></div>
@@ -75,18 +75,27 @@ function periods(){const ks=Object.keys(D.days).filter(k=>D.days[k].p).sort();co
  for(const k of ks){const d=pk(k);if(!last||diff(last,d)>2)st.push({s:d,len:1});else st[st.length-1].len+=diff(last,d)<=1?1:diff(last,d);last=d}return st}
 function calc(){const st=periods(),cyc=[];for(let i=1;i<st.length;i++)cyc.push(diff(st[i-1].s,st[i].s));
  const rc=cyc.slice(-6),avg=rc.length?Math.round(rc.reduce((a,b)=>a+b)/rc.length):28,pl=st.length?Math.round(st.slice(-6).reduce((a,b)=>a+b.len,0)/Math.min(6,st.length)):5;
- let next=null,ov=null;if(st.length){next=addD(st[st.length-1].s,avg);const t=new Date();t.setHours(0,0,0,0);while(next<t)next=addD(next,avg);ov=addD(next,-14)}return{st,cyc,rc,avg,pl,next,ov}}
+ const ovs=Object.keys(D.days).filter(k=>D.days[k].o).sort().map(pk),lut=[];
+ for(const o of ovs){const n=st.find(x=>x.s>o);if(n){const l=diff(o,n.s);if(l>=9&&l<=18)lut.push(l)}}
+ const L=lut.length?Math.round(lut.slice(-6).reduce((a,b)=>a+b)/Math.min(6,lut.length)):14;
+ const t=new Date();t.setHours(0,0,0,0);let next=null,ov=null,actOv=null,last=null;
+ if(st.length){last=st[st.length-1].s;actOv=ovs.filter(o=>o>last).pop()||null;
+  next=actOv?addD(actOv,L):addD(last,avg);if(diff(last,next)<15)next=addD(last,avg);while(next<t)next=addD(next,avg);ov=actOv&&addD(actOv,L)>=next?actOv:addD(next,-L)}
+ return{st,cyc,rc,avg,pl,next,ov,L,lut,ovs,actOv,last}}
 function render(){const c=calc(),g=document.getElementById('grid');document.getElementById('mt').textContent=MN[view.getMonth()]+' '+view.getFullYear();
- const pred=new Set(),fert=new Set();if(c.next){for(let r=0;r<3;r++){const n=addD(c.next,c.avg*r);for(let i=0;i<c.pl;i++)pred.add(key(addD(n,i)));for(let i=-5;i<=1;i++)fert.add(key(addD(n,i-14)))}}
+ const pred=new Set(),fert=new Set(),eov=new Set();
+ c.ovs.forEach(o=>{for(let i=-5;i<=1;i++)fert.add(key(addD(o,i)))});
+ if(c.next){if(c.actOv&&c.ov===c.actOv){}else if(c.last){const o=addD(c.next,-c.L);if(o>c.last){eov.add(key(o));for(let i=-5;i<=1;i++)fert.add(key(addD(o,i)))}}
+  for(let r=0;r<3;r++){const n=addD(c.next,c.avg*r);for(let i=0;i<c.pl;i++)pred.add(key(addD(n,i)));if(r){const o=addD(n,-c.L);eov.add(key(o));for(let i=-5;i<=1;i++)fert.add(key(addD(o,i)))}}}
  let h=['S','M','T','W','T','F','S'].map(x=>`<div class="dow">${x}</div>`).join('');for(let i=0;i<view.getDay();i++)h+='<div class="day out"></div>';
  const dim=new Date(view.getFullYear(),view.getMonth()+1,0).getDate(),tk=key(new Date());
  for(let d=1;d<=dim;d++){const k=key(new Date(view.getFullYear(),view.getMonth(),d)),v=D.days[k]||{};let cl='day';
-  if(v.p)cl+=' p';else if(v.o)cl+=' o';else if(pred.has(k))cl+=' pred';if(!v.p&&fert.has(k))cl+=' fert';if(k===tk)cl+=' today';
+  let lab='';if(v.p)cl+=' p';else if(v.o)cl+=' o';else if(pred.has(k))cl+=' pred';else if(eov.has(k)){cl+=' eov';lab='<small class="ex">exp</small>'}else if(fert.has(k))cl+=' fert';if(k===tk)cl+=' today';
   let dots='';if(v.s)dots+='<i style="background:var(--pink);border:1px solid #fff"></i>';if(v.o&&v.p)dots+='<i style="background:var(--purple)"></i>';if(v.sym&&v.sym.length)dots+='<i style="background:#f4c96b"></i>';
-  h+=`<button class="${cl}" data-k="${k}">${d}<span class="dots">${dots}</span></button>`}
+  h+=`<button class="${cl}" data-k="${k}">${d}${lab}<span class="dots">${dots}</span></button>`}
  g.innerHTML=h;
  const f=d=>d?MN[d.getMonth()].slice(0,3)+' '+d.getDate():'—';
- document.getElementById('stats').innerHTML=`<div class="stat"><small>Next period</small><b id="nextp">${f(c.next)}</b></div><div class="stat"><small>Est. ovulation</small><b id="ovp">${f(c.ov)}</b></div><div class="stat"><small>Avg cycle</small><b id="avgc">${c.cyc.length?c.avg+' days':'—'}</b></div><div class="stat"><small>Avg period</small><b>${c.st.length?c.pl+' days':'—'}</b></div>`;
+ document.getElementById('stats').innerHTML=`<div class="stat"><small>Next period</small><b id="nextp">${f(c.next)}</b></div><div class="stat"><small>${c.actOv&&c.ov===c.actOv?"Ovulation (logged)":"Expected ovulation"}</small><b id="ovp">${f(c.ov)}</b></div><div class="stat"><small>Avg cycle</small><b id="avgc">${c.cyc.length?c.avg+' days':'—'}</b></div><div class="stat"><small>Avg period</small><b>${c.st.length?c.pl+' days':'—'}</b></div>`;
  let n=[];if(!c.st.length)n.push('Tap a day to log your period. Predictions appear once you have logged one.');else if(!c.cyc.length)n.push('Log your next period too and averages will get smarter.');
  if(c.rc.length>=3&&Math.max(...c.rc)-Math.min(...c.rc)>7)n.push('Your recent cycles vary by more than a week. That is common in your late 30s and 40s and can be an early sign of perimenopause.');
  if(c.rc.some(x=>x<21))n.push('A recent cycle was shorter than 21 days.');if(c.rc.some(x=>x>35&&x<=60))n.push('A recent cycle was longer than 35 days.');if(c.rc.some(x=>x>60))n.push('Looks like a month may have been skipped. Skipped periods can happen during perimenopause.');
