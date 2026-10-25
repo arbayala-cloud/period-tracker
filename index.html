@@ -24,7 +24,7 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 .note{background:#f4ecfb;border-left:4px solid var(--purple);padding:10px 12px;border-radius:10px;font-size:.88rem;margin-top:10px}
 .btn{background:var(--rose);color:#fff;padding:11px 16px;font-weight:700}.btn.alt{background:var(--blush);color:var(--plum)}
 .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.sheet{position:fixed;inset:0;background:#4a2a3d66;display:none;align-items:flex-end;z-index:9}.sheet.on{display:flex}
+.sheet{position:fixed;inset:0;background:#4a2a3d66;display:none;align-items:flex-end;z-index:10}.sheet.on{display:flex}
 .panel{background:#fff;width:100%;max-width:480px;margin:auto auto 0;border-radius:24px 24px 0 0;padding:18px 16px 26px;max-height:92vh;overflow:auto}
 .panel h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin:0 0 10px;text-align:center}
 .tog{display:flex;gap:8px}.tog button{flex:1;padding:12px 4px;background:#f7eef0;font-weight:700;color:var(--ink);border:2px solid transparent}
@@ -35,18 +35,33 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 .yr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ym{font-size:.65rem;text-align:center}.ym .g{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}.ym .g i{aspect-ratio:1;background:#f6eaea;border-radius:2px}
 .tiny{font-size:.75rem;color:#a08090;text-align:center;margin-top:8px}
 #hint{display:none;font-size:.82rem;text-align:center;margin-top:8px}
+.top{display:flex;align-items:center;justify-content:space-between}.top h1{margin:0;font-size:2rem}
+.wrap{padding-top:10px}.sub{margin-bottom:8px}.grid{gap:3px}.legend{gap:6px 10px;font-size:.74rem}
+.mini{display:flex;justify-content:space-around;margin-top:10px;background:var(--cream);border-radius:12px;padding:8px;font-size:.8rem;text-align:center}.mini b{display:block;color:var(--rose);font-size:1rem}
+.menu{position:fixed;inset:0;background:#4a2a3d55;display:none;z-index:8;justify-content:flex-end}.menu.on{display:flex}
+.mpanel{background:var(--cream);width:78%;max-width:320px;height:100%;padding:16px;box-shadow:-6px 0 20px #0002;animation:sl .25s}
+@keyframes sl{from{transform:translateX(100%)}}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.ph h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin:0;color:var(--plum)}
+.mi{display:flex;justify-content:space-between;width:100%;background:#fff;padding:14px;margin-bottom:8px;font-size:1rem;font-weight:600;color:var(--ink);box-shadow:0 3px 10px #b8476a14}.mi span{color:var(--rose)}
+.page{position:fixed;inset:0;background:linear-gradient(180deg,#fde8ea,#fff6f1 40%);z-index:9;display:none;overflow:auto;padding:14px}.page.on{display:block;animation:fd .2s}.page>*{max-width:480px;margin-left:auto;margin-right:auto}
+@keyframes fd{from{opacity:0;transform:translateY(10px)}}
+#hint{margin-top:12px}
 </style></head><body><div class="wrap">
-<h1>Period Tracker</h1><div class="sub" id="greet">Be gentle with yourself today</div>
+<div class="top"><span style="width:40px"></span><h1>Period Tracker</h1><button class="nav" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button></div>
+<div class="sub" id="greet">Be gentle with yourself today</div>
 <div class="card"><div class="mh"><button class="nav" id="prev" aria-label="previous">&#8249;</button><h2 id="mt"></h2><button class="nav" id="next" aria-label="next">&#8250;</button></div>
 <div class="grid" id="grid"></div>
-<div class="legend"><span><i class="sw" style="background:var(--red)"></i>Period</span><span><i class="sw" style="background:var(--purple)"></i>Ovulation</span><span><i class="sw" style="background:var(--pink)"></i>Intimacy &#9829;</span><span><i class="sw" style="border:1.5px dashed var(--red)"></i>Expected period</span><span><i class="sw" style="border:1.5px dashed var(--purple);background:#f3ecfc"></i>Expected ovulation</span><span><i class="sw" style="background:#efe6fa"></i>Fertile window</span></div></div>
-<div class="card"><div class="stats" id="stats"></div><div id="notes"></div></div>
-<div class="card"><div class="mh"><button class="nav" id="yp">&#8249;</button><h2 id="yt"></h2><button class="nav" id="yn">&#8250;</button></div><div class="yr" id="yr" style="margin-top:10px"></div></div>
-<div class="card"><div class="row"><button class="btn" id="inst">Install App</button><button class="btn alt" id="bk">Backup</button><button class="btn alt" id="rs">Restore</button><input type="file" id="file" accept=".json,application/json" hidden></div>
-<div id="hint">On Android Chrome: tap the &#8942; menu, then "Add to Home screen" or "Install app".</div>
-<div class="tiny">Your data stays on this phone only. Tap Backup now and then to save a copy.</div></div>
-<div class="tiny">Just for personal tracking, not medical advice. Talk with your doctor about any concerns.</div>
+<div class="legend"><span><i class="sw" style="background:var(--red)"></i>Period</span><span><i class="sw" style="background:var(--purple)"></i>Ovulation</span><span><i class="sw" style="background:var(--pink)"></i>Intimacy &#9829;</span><span><i class="sw" style="border:1.5px dashed var(--red)"></i>Expected period</span><span><i class="sw" style="border:1.5px dashed var(--purple);background:#f3ecfc"></i>Expected ovulation</span><span><i class="sw" style="background:#efe6fa"></i>Fertile window</span></div>
+<div class="mini" id="mini"></div></div>
 </div>
+<div class="menu" id="menu"><div class="mpanel"><div class="ph"><h3>Menu</h3><button class="nav x" data-close aria-label="Close">&#215;</button></div>
+<button class="mi" data-open="pYear">Year View<span>&#8250;</span></button><button class="mi" data-open="pStats">My Cycle Stats<span>&#8250;</span></button><button class="mi" data-open="pNotes">Perimenopause Notes<span>&#8250;</span></button><button class="mi" data-open="pBackup">Backup &amp; Restore<span>&#8250;</span></button><button class="mi" data-open="pInstall">Install App<span>&#8250;</span></button><button class="mi" data-open="pAbout">About<span>&#8250;</span></button></div></div>
+<div class="page" id="pYear"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Year View</h3><span style="width:40px"></span></div><div class="card"><div class="mh"><button class="nav" id="yp">&#8249;</button><h2 id="yt"></h2><button class="nav" id="yn">&#8250;</button></div><div class="yr" id="yr" style="margin-top:10px"></div></div></div>
+<div class="page" id="pStats"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>My Cycle Stats</h3><span style="width:40px"></span></div><div class="card"><div class="stats" id="stats"></div></div></div>
+<div class="page" id="pNotes"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Perimenopause Notes</h3><span style="width:40px"></span></div><div class="card"><div id="notes"></div><div class="tiny">Gentle notes based on your logs. Use the checkboxes on any day for hot flashes, night sweats, or sleep trouble.</div></div></div>
+<div class="page" id="pBackup"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Backup &amp; Restore</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="bk">Backup</button><button class="btn alt" id="rs">Restore</button><input type="file" id="file" accept=".json,application/json" hidden></div><div class="tiny">Your data stays on this phone only. Tap Backup now and then and keep the file somewhere safe. Restore brings it back on any phone.</div></div></div>
+<div class="page" id="pInstall"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Install App</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="inst">Install App</button></div><div id="hint">On Android Chrome: tap the &#8942; menu, then "Add to Home screen" or "Install app".</div></div></div>
+<div class="page" id="pAbout"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>About</h3><span style="width:40px"></span></div><div class="card"><p style="margin:0;font-size:.92rem">Your personal Period Tracker. Just for personal tracking, not medical advice. Talk with your doctor about any concerns.</p></div></div>
 <div class="sheet" id="sheet"><div class="panel"><h3 id="dt"></h3>
 <div class="tog"><button data-k="p">Period</button><button data-k="o">Ovulation</button><button data-k="s">Intimacy &#9829;</button></div>
 <div id="moodbox"><div class="lbl">How are you feeling?</div><div class="moods" id="moods"></div></div>
@@ -101,6 +116,8 @@ function render(){const c=calc(),g=document.getElementById('grid');document.getE
  if(c.rc.some(x=>x<21))n.push('A recent cycle was shorter than 21 days.');if(c.rc.some(x=>x>35&&x<=60))n.push('A recent cycle was longer than 35 days.');if(c.rc.some(x=>x>60))n.push('Looks like a month may have been skipped. Skipped periods can happen during perimenopause.');
  const s90=Object.entries(D.days).filter(([k,v])=>v.sym&&v.sym.length&&diff(pk(k),new Date())<=90).length;if(s90>=3)n.push(`You noted hot flashes, night sweats, or sleep trouble on ${s90} days lately. Worth mentioning at your next checkup.`);
  if(n.length>1||c.rc.length>=3&&n.length)n.push('If anything feels off, a quick chat with your doctor can help.');
+ document.getElementById('mini').innerHTML=`<div>Next period<b>${f(c.next)}</b></div><div>${c.actOv&&c.ov===c.actOv?'Ovulation':'Expected ovulation'}<b>${f(c.ov)}</b></div>`;
+ if(!n.length)n.push('Nothing to note right now. Your cycles look steady.');
  document.getElementById('notes').innerHTML=n.map(x=>`<div class="note">${x}</div>`).join('');
  document.getElementById('yt').textContent=yv;let y='';for(let m=0;m<12;m++){const fd=new Date(yv,m,1).getDay(),dm=new Date(yv,m+1,0).getDate();let cells='<i style="visibility:hidden"></i>'.repeat(fd);
   for(let d=1;d<=dm;d++){const v=D.days[key(new Date(yv,m,d))]||{};cells+=`<i style="${v.p?'background:var(--red)':v.o?'background:var(--purple)':v.s?'background:var(--pink)':''}"></i>`}y+=`<div class="ym">${MN[m].slice(0,3)}<div class="g">${cells}</div></div>`}
@@ -125,9 +142,12 @@ document.getElementById('rs').onclick=()=>document.getElementById('file').click(
 document.getElementById('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j.days)throw 0;if(confirm('Replace current data with this backup?')){D=j;save();render();alert('Backup restored!')}}catch(x){alert('That file does not look like a Period Tracker backup.')}e.target.value=''};
 let dp=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
 document.getElementById('inst').onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;dp=null}else document.getElementById('hint').style.display='block'};
-if(matchMedia('(display-mode: standalone)').matches)document.getElementById('inst').style.display='none';
+if(matchMedia('(display-mode: standalone)').matches)document.querySelector('[data-open=pInstall]').style.display='none';
 const hr=new Date().getHours();document.getElementById('greet').textContent=(hr<12?'Good morning':hr<18?'Good afternoon':'Good evening')+', Ashley';
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
+const menu=document.getElementById('menu');document.getElementById('menuBtn').onclick=()=>menu.classList.add('on');
+menu.onclick=e=>{if(e.target===menu||e.target.closest('[data-close]'))menu.classList.remove('on');const o=e.target.closest('[data-open]');if(o){menu.classList.remove('on');document.getElementById(o.dataset.open).classList.add('on')}};
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>{b.closest('.page').classList.remove('on');menu.classList.add('on')});
 render();
 </script></body></html>
