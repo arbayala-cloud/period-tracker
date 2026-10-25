@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Period Tracker</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#b8476a"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
+<script>document.documentElement.dataset.theme=localStorage.getItem("pt-theme")||"light"</script><title>Period Tracker</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#b8476a"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--cream:#fff6f1;--blush:#fbe1e3;--rose:#b8476a;--plum:#6d3560;--red:#d63a4f;--purple:#8b5cc4;--pink:#f07aa8;--ink:#4a2a3d}
@@ -46,7 +46,29 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 .page{position:fixed;inset:0;background:linear-gradient(180deg,#fde8ea,#fff6f1 40%);z-index:9;display:none;overflow:auto;padding:14px}.page.on{display:block;animation:fd .2s}.page>*{max-width:480px;margin-left:auto;margin-right:auto}
 @keyframes fd{from{opacity:0;transform:translateY(10px)}}
 #hint{margin-top:12px}
-</style></head><body><div class="wrap">
+
+[data-theme=dark] body{background:linear-gradient(180deg,#2a1830,#1c1620 50%);color:#f1e4ec}
+[data-theme=dark]{--ink:#f1e4ec;--plum:#e2b8d6;--cream:#2f2233;--blush:#3d2a40;--rose:#ff8fb1}
+[data-theme=dark] .card,[data-theme=dark] .panel,[data-theme=dark] .mi{background:#271c2b;box-shadow:0 6px 20px #0006}
+[data-theme=dark] .day{background:#33263a;color:#f1e4ec}[data-theme=dark] .day.p{background:#e0485e}[data-theme=dark] .day.o{background:#9a6ad6}
+[data-theme=dark] .day.fert{background:#3e3158;color:#d9c6f7}[data-theme=dark] .day.eov{background:#3a2d52;color:#cdb2f5;border-color:#b48cf0}
+[data-theme=dark] .day.pred{background:repeating-linear-gradient(45deg,#4a2533,#4a2533 4px,#33263a 4px,#33263a 8px);border-color:#ff6b80}
+[data-theme=dark] .mpanel{background:#1f1724}[data-theme=dark] .page{background:linear-gradient(180deg,#2a1830,#1c1620 50%)}
+[data-theme=dark] .sub,[data-theme=dark] .tiny,[data-theme=dark] .stat small,[data-theme=dark] .dow{color:#b99aae}
+[data-theme=dark] .note{background:#2f2540;color:#efe2f5}[data-theme=dark] .tog button,[data-theme=dark] .mood{background:#33263a;color:#f1e4ec}[data-theme=dark] .mood.on{background:#4a2a40}
+[data-theme=dark] .ym .g i{background:#3a2c3f}[data-theme=dark] .btn.alt{background:#3d2a40;color:#f3c6dc}
+[data-theme=fun] body{background:linear-gradient(160deg,#ffd6e8,#fff1c9 45%,#d9f2ff 80%,#e9dcff);background-attachment:fixed}
+[data-theme=fun]{--rose:#ff5d9e;--plum:#8a3ffc;--blush:#ffe0f0;--cream:#fff7e0}
+[data-theme=fun] .card{border-radius:28px;border:3px solid #fff;box-shadow:0 8px 0 #ffb3d1,0 10px 24px #ff5d9e33}
+[data-theme=fun] .day{border-radius:50%;background:#fffaf2}[data-theme=fun] .day.p{background:radial-gradient(circle at 35% 30%,#ff7a8c,#e0304d)}[data-theme=fun] .day.o{background:radial-gradient(circle at 35% 30%,#b98cff,#7b46d9)}
+[data-theme=fun] .day.fert{background:#eadcff;color:#5b3d86}[data-theme=fun] .day.eov{background:#f3ecfc;color:var(--purple)}[data-theme=fun] .day.pred{background:repeating-linear-gradient(45deg,#ffd9e2,#ffd9e2 4px,#fff 4px,#fff 8px)}
+[data-theme=fun] .btn,[data-theme=fun] .mi,[data-theme=fun] .nav{border-radius:999px}[data-theme=fun] .nav{background:#fff;box-shadow:0 3px 0 #ffb3d1}
+[data-theme=fun] h1{color:#e0307a;text-shadow:2px 2px 0 #fff,4px 4px 0 #ffc4dc}
+[data-theme=fun] .mpanel{background:linear-gradient(180deg,#fff1f8,#f3ebff)}[data-theme=fun] .page{background:linear-gradient(160deg,#ffd6e8,#fff1c9 45%,#d9f2ff)}
+.deco{display:none;position:fixed;pointer-events:none;z-index:0;opacity:.85}[data-theme=fun] .deco{display:block}.wrap{position:relative;z-index:1}
+.thm{display:flex;gap:6px;margin:4px 0 14px}.thm button{flex:1;padding:10px 4px;font-weight:700;background:#fff;color:#4a2a3d;border:2px solid transparent}.thm button.on{border-color:var(--rose)}
+.thm [data-t=dark]{background:#2a1830;color:#f1e4ec}.thm [data-t=fun]{background:linear-gradient(135deg,#ffd6e8,#fff1c9,#d9f2ff)}
+</style></head><body><div class="deco" style="top:8px;left:8px"><svg viewBox="0 0 40 40" width="44"><g fill="#ff9ec7"><circle cx="20" cy="10" r="7"/><circle cx="30" cy="18" r="7"/><circle cx="26" cy="30" r="7"/><circle cx="14" cy="30" r="7"/><circle cx="10" cy="18" r="7"/></g><circle cx="20" cy="21" r="5" fill="#ffd55e"/></svg></div><div class="deco" style="top:120px;right:-6px"><svg viewBox="0 0 24 24" width="30"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-3 7-10 13z" fill="#b98cff"/></svg></div><div class="deco" style="bottom:90px;left:-8px"><svg viewBox="0 0 40 40" width="56"><g fill="#a9d8ff"><circle cx="20" cy="10" r="7"/><circle cx="30" cy="18" r="7"/><circle cx="26" cy="30" r="7"/><circle cx="14" cy="30" r="7"/><circle cx="10" cy="18" r="7"/></g><circle cx="20" cy="21" r="5" fill="#ffd55e"/></svg></div><div class="deco" style="bottom:20px;right:14px"><svg viewBox="0 0 24 24" width="36"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-3 7-10 13z" fill="#ff7aa8"/></svg></div><div class="deco" style="top:46%;left:6px"><svg viewBox="0 0 24 24" width="18"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-3 7-10 13z" fill="#ffc65e"/></svg></div><svg class="deco" style="inset:0;width:100%;height:100%;opacity:.5" viewBox="0 0 100 100" preserveAspectRatio="none"><g><rect x="12" y="16" width="2" height="1" fill="#ff5d9e" transform="rotate(30 12 16)"/><rect x="84" y="10" width="2" height="1" fill="#8a3ffc"/><rect x="70" y="60" width="2" height="1" fill="#33c3a8" transform="rotate(-25 70 60)"/><rect x="20" y="70" width="2" height="1" fill="#ffb020"/><rect x="92" y="40" width="2" height="1" fill="#ff5d9e" transform="rotate(60 92 40)"/><rect x="50" y="94" width="2" height="1" fill="#8a3ffc"/></g></svg><div class="wrap">
 <div class="top"><span style="width:40px"></span><h1>Period Tracker</h1><button class="nav" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button></div>
 <div class="sub" id="greet">Be gentle with yourself today</div>
 <div class="card"><div class="mh"><button class="nav" id="prev" aria-label="previous">&#8249;</button><h2 id="mt"></h2><button class="nav" id="next" aria-label="next">&#8250;</button></div>
@@ -54,13 +76,13 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 <div class="legend"><span><i class="sw" style="background:var(--red)"></i>Period</span><span><i class="sw" style="background:var(--purple)"></i>Ovulation</span><span><i class="sw" style="background:var(--pink)"></i>Intimacy &#9829;</span><span><i class="sw" style="border:1.5px dashed var(--red)"></i>Expected period</span><span><i class="sw" style="border:1.5px dashed var(--purple);background:#f3ecfc"></i>Expected ovulation</span><span><i class="sw" style="background:#efe6fa"></i>Fertile window</span></div>
 <div class="mini" id="mini"></div></div>
 </div>
-<div class="menu" id="menu"><div class="mpanel"><div class="ph"><h3>Menu</h3><button class="nav x" data-close aria-label="Close">&#215;</button></div>
+<div class="menu" id="menu"><div class="mpanel"><div class="ph"><h3>Menu</h3><button class="nav x" data-close aria-label="Close">&#215;</button></div><div class="lbl" style="margin-top:0">Theme</div><div class="thm" id="thm"><button data-t="light">Light</button><button data-t="dark">Dark</button><button data-t="fun">Fun</button></div>
 <button class="mi" data-open="pYear">Year View<span>&#8250;</span></button><button class="mi" data-open="pStats">My Cycle Stats<span>&#8250;</span></button><button class="mi" data-open="pNotes">Perimenopause Notes<span>&#8250;</span></button><button class="mi" data-open="pBackup">Backup &amp; Restore<span>&#8250;</span></button><button class="mi" data-open="pInstall">Install App<span>&#8250;</span></button><button class="mi" data-open="pAbout">About<span>&#8250;</span></button></div></div>
 <div class="page" id="pYear"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Year View</h3><span style="width:40px"></span></div><div class="card"><div class="mh"><button class="nav" id="yp">&#8249;</button><h2 id="yt"></h2><button class="nav" id="yn">&#8250;</button></div><div class="yr" id="yr" style="margin-top:10px"></div></div></div>
 <div class="page" id="pStats"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>My Cycle Stats</h3><span style="width:40px"></span></div><div class="card"><div class="stats" id="stats"></div></div></div>
 <div class="page" id="pNotes"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Perimenopause Notes</h3><span style="width:40px"></span></div><div class="card"><div id="notes"></div><div class="tiny">Gentle notes based on your logs. Use the checkboxes on any day for hot flashes, night sweats, or sleep trouble.</div></div></div>
 <div class="page" id="pBackup"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Backup &amp; Restore</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="bk">Backup</button><button class="btn alt" id="rs">Restore</button><input type="file" id="file" accept=".json,application/json" hidden></div><div class="tiny">Your data stays on this phone only. Tap Backup now and then and keep the file somewhere safe. Restore brings it back on any phone.</div></div></div>
-<div class="page" id="pInstall"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Install App</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="inst">Install App</button></div><div id="hint">On Android Chrome: tap the &#8942; menu, then "Add to Home screen" or "Install app".</div></div></div>
+<div class="page" id="pInstall"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Install App</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="inst">Install App</button></div><div id="already" style="display:none;text-align:center;margin-top:12px;font-size:.9rem">It looks like Period Tracker is already installed on this phone. You are all set.</div><div id="hint">On Android Chrome: tap the &#8942; menu, then "Add to Home screen" or "Install app".</div></div></div>
 <div class="page" id="pAbout"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>About</h3><span style="width:40px"></span></div><div class="card"><p style="margin:0;font-size:.92rem">Your personal Period Tracker. Just for personal tracking, not medical advice. Talk with your doctor about any concerns.</p></div></div>
 <div class="sheet" id="sheet"><div class="panel"><h3 id="dt"></h3>
 <div class="tog"><button data-k="p">Period</button><button data-k="o">Ovulation</button><button data-k="s">Intimacy &#9829;</button></div>
@@ -141,8 +163,12 @@ document.getElementById('bk').onclick=()=>{const a=document.createElement('a');a
 document.getElementById('rs').onclick=()=>document.getElementById('file').click();
 document.getElementById('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j.days)throw 0;if(confirm('Replace current data with this backup?')){D=j;save();render();alert('Backup restored!')}}catch(x){alert('That file does not look like a Period Tracker backup.')}e.target.value=''};
 let dp=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
-document.getElementById('inst').onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;dp=null}else document.getElementById('hint').style.display='block'};
-if(matchMedia('(display-mode: standalone)').matches)document.querySelector('[data-open=pInstall]').style.display='none';
+const inApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone;addEventListener('appinstalled',()=>localStorage.setItem('pt-installed','1'));
+document.getElementById('inst').onclick=async()=>{const h=document.getElementById('hint'),al=document.getElementById('already');h.style.display=al.style.display='none';
+ if(inApp()||(!dp&&localStorage.getItem('pt-installed'))){al.style.display='block';return}if(dp){dp.prompt();const r=await dp.userChoice;dp=null;if(r.outcome==='accepted'){localStorage.setItem('pt-installed','1');al.style.display='block'}}else h.style.display='block'};
+const setT=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('pt-theme',t);document.querySelectorAll('#thm button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelector('meta[name=theme-color]').content=t==='dark'?'#2a1830':t==='fun'?'#ff5d9e':'#b8476a'};
+setT(document.documentElement.dataset.theme);document.getElementById('thm').onclick=e=>{const b=e.target.closest('[data-t]');if(b)setT(b.dataset.t)};
+
 const hr=new Date().getHours();document.getElementById('greet').textContent=(hr<12?'Good morning':hr<18?'Good afternoon':'Good evening')+', Ashley';
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
