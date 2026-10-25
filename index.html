@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Period Tracker</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#b8476a"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#fff6f1;--blush:#fbe1e3;--rose:#b8476a;--plum:#6d3560;--red:#d63a4f;--purple:#8b5cc4;--pink:#f07aa8;--ink:#4a2a3d}
+*{box-sizing:border-box}body{margin:0;font-family:Nunito,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fde8ea,#fff6f1 40%);min-height:100vh}
+.wrap{max-width:480px;margin:auto;padding:16px 14px 40px}
+h1{font-family:'Cormorant Garamond',serif;text-align:center;font-size:2.3rem;margin:6px 0 0;color:var(--plum)}
+.sub{text-align:center;font-size:.9rem;color:#9a6a80;margin-bottom:12px}
+.card{background:#fff;border-radius:20px;padding:14px;box-shadow:0 6px 20px #b8476a18;margin-bottom:14px}
+.mh{display:flex;align-items:center;justify-content:space-between}.mh h2{font-family:'Cormorant Garamond',serif;margin:0;font-size:1.5rem}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
+.nav{background:var(--blush);width:40px;height:40px;font-size:1.2rem;color:var(--plum)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}
+.dow{text-align:center;font-size:.72rem;color:#a88;font-weight:700}
+.day{aspect-ratio:1;border-radius:12px;background:#fdf3f3;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:600;font-size:.9rem;position:relative;color:var(--ink)}
+.day.out{visibility:hidden}.day.today{outline:2px solid var(--plum)}
+.day.p{background:var(--red);color:#fff}.day.o{background:var(--purple);color:#fff}
+.day.pred{background:repeating-linear-gradient(45deg,#fde0e4,#fde0e4 4px,#fff 4px,#fff 8px);border:1.5px dashed var(--red)}
+.day.fert{box-shadow:inset 0 -4px 0 #c9b0ea}
+.dots{display:flex;gap:2px;height:7px;margin-top:1px}.dots i{width:6px;height:6px;border-radius:50%}
+.legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:.8rem;margin-top:10px}.legend span{display:flex;align-items:center;gap:4px}.sw{width:13px;height:13px;border-radius:4px;display:inline-block}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--cream);border-radius:14px;padding:10px;text-align:center}.stat b{display:block;font-size:1.25rem;color:var(--rose)}.stat small{color:#9a6a80}
+.note{background:#f4ecfb;border-left:4px solid var(--purple);padding:10px 12px;border-radius:10px;font-size:.88rem;margin-top:10px}
+.btn{background:var(--rose);color:#fff;padding:11px 16px;font-weight:700}.btn.alt{background:var(--blush);color:var(--plum)}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.sheet{position:fixed;inset:0;background:#4a2a3d66;display:none;align-items:flex-end;z-index:9}.sheet.on{display:flex}
+.panel{background:#fff;width:100%;max-width:480px;margin:auto auto 0;border-radius:24px 24px 0 0;padding:18px 16px 26px;max-height:92vh;overflow:auto}
+.panel h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin:0 0 10px;text-align:center}
+.tog{display:flex;gap:8px}.tog button{flex:1;padding:12px 4px;background:#f7eef0;font-weight:700;color:var(--ink);border:2px solid transparent}
+.tog button.on[data-k=p]{background:var(--red);color:#fff}.tog button.on[data-k=o]{background:var(--purple);color:#fff}.tog button.on[data-k=s]{background:var(--pink);color:#fff}
+.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.mood{background:#fff8f6;padding:6px 2px;font-size:.72rem;color:var(--ink);border:2px solid transparent}.mood.on{border-color:var(--rose);background:#fde8ec}.mood svg{width:44px;height:44px;display:block;margin:auto}
+.chk{display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.lbl{font-weight:700;margin:14px 0 4px;color:var(--plum)}
+.yr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ym{font-size:.65rem;text-align:center}.ym .g{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}.ym .g i{aspect-ratio:1;background:#f6eaea;border-radius:2px}
+.tiny{font-size:.75rem;color:#a08090;text-align:center;margin-top:8px}
+#hint{display:none;font-size:.82rem;text-align:center;margin-top:8px}
+</style></head><body><div class="wrap">
+<h1>Period Tracker</h1><div class="sub" id="greet">Be gentle with yourself today</div>
+<div class="card"><div class="mh"><button class="nav" id="prev" aria-label="previous">&#8249;</button><h2 id="mt"></h2><button class="nav" id="next" aria-label="next">&#8250;</button></div>
+<div class="grid" id="grid"></div>
+<div class="legend"><span><i class="sw" style="background:var(--red)"></i>Period</span><span><i class="sw" style="background:var(--purple)"></i>Ovulation</span><span><i class="sw" style="background:var(--pink)"></i>Intimacy &#9829;</span><span><i class="sw" style="border:1.5px dashed var(--red)"></i>Expected</span><span><i class="sw" style="background:#c9b0ea"></i>Fertile</span></div></div>
+<div class="card"><div class="stats" id="stats"></div><div id="notes"></div></div>
+<div class="card"><div class="mh"><button class="nav" id="yp">&#8249;</button><h2 id="yt"></h2><button class="nav" id="yn">&#8250;</button></div><div class="yr" id="yr" style="margin-top:10px"></div></div>
+<div class="card"><div class="row"><button class="btn" id="inst">Install App</button><button class="btn alt" id="bk">Backup</button><button class="btn alt" id="rs">Restore</button><input type="file" id="file" accept=".json,application/json" hidden></div>
+<div id="hint">On Android Chrome: tap the &#8942; menu, then "Add to Home screen" or "Install app".</div>
+<div class="tiny">Your data stays on this phone only. Tap Backup now and then to save a copy.</div></div>
+<div class="tiny">Just for personal tracking, not medical advice. Talk with your doctor about any concerns.</div>
+</div>
+<div class="sheet" id="sheet"><div class="panel"><h3 id="dt"></h3>
+<div class="tog"><button data-k="p">Period</button><button data-k="o">Ovulation</button><button data-k="s">Intimacy &#9829;</button></div>
+<div id="moodbox"><div class="lbl">How are you feeling?</div><div class="moods" id="moods"></div></div>
+<div class="lbl">Anything else? (optional)</div><div class="chk" id="sym"></div>
+<div class="row" style="margin-top:16px"><button class="btn alt" id="clr">Clear day</button><button class="btn" id="done">Done</button></div></div></div>
+<script>
+const K='pt-data-v1';let D=JSON.parse(localStorage.getItem(K)||'{"days":{}}');D.days=D.days||{};
+const save=()=>localStorage.setItem(K,JSON.stringify(D));
+const pad=n=>String(n).padStart(2,'0'),key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pk=s=>{const[a,b,c]=s.split('-');return new Date(a,b-1,c)},addD=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n),diff=(a,b)=>Math.round((b-a)/864e5);
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+// hand-drawn faces: [name, face color, eyes, mouth, extra]
+const E={dot:'<circle cx="17" cy="21" r="2.4"/><circle cx="31" cy="21" r="2.4"/>',arc:'<path d="M13 22q4-4 8 0M27 22q4-4 8 0" fill="none" stroke-width="2.2"/>',shut:'<path d="M13 21q4 3 8 0M27 21q4 3 8 0" fill="none" stroke-width="2.2"/>',squint:'<path d="M13 19l7 3-7 2M35 19l-7 3 7 2" fill="none" stroke-width="2.2"/>',ang:'<path d="M13 17l7 3M35 17l-7 3" stroke-width="2.2"/><circle cx="17" cy="23" r="2"/><circle cx="31" cy="23" r="2"/>'};
+const MOODS=[['happy','#ffd88a',E.arc,'<path d="M15 29q9 9 18 0" fill="none" stroke-width="2.4"/>','<circle cx="11" cy="28" r="3" fill="#f6a6b5" stroke="none"/><circle cx="37" cy="28" r="3" fill="#f6a6b5" stroke="none"/>'],
+['calm','#cfe8d8',E.shut,'<path d="M18 31q6 4 12 0" fill="none" stroke-width="2.2"/>',''],
+['tired','#d9d4ee',E.shut,'<ellipse cx="24" cy="32" rx="3" ry="2.4" fill="none" stroke-width="2"/>','<path d="M36 8h5l-5 5h5" fill="none" stroke-width="1.6"/>'],
+['crampy','#f9c3c3',E.squint,'<path d="M16 32q2-3 4 0t4 0 4 0 4 0" fill="none" stroke-width="2"/>',''],
+['irritable','#f5b39a',E.ang,'<path d="M17 32h14" stroke-width="2.4"/>',''],
+['sad','#bcd6f0',E.dot,'<path d="M16 33q8-7 16 0" fill="none" stroke-width="2.4"/>','<path d="M33 25q2 4 0 5q-2-1 0-5z" fill="#6aa6de" stroke="none"/>'],
+['emotional','#e8c4e6',E.dot,'<path d="M18 31q6 3 12 0" fill="none" stroke-width="2.2"/>','<path d="M15 25q2 4 0 5q-2-1 0-5zM33 25q2 4 0 5q-2-1 0-5z" fill="#6aa6de" stroke="none"/>'],
+['loving','#fbcfe0',E.arc,'<path d="M17 30q7 6 14 0" fill="none" stroke-width="2.2"/>','<path d="M38 9c-2-3-6-1-4 2l4 4 4-4c2-3-2-5-4-2z" fill="#e25b86" stroke="none"/>']];
+const face=m=>`<svg viewBox="0 0 48 48" stroke="#4a2a3d" stroke-linecap="round" fill="#4a2a3d"><circle cx="24" cy="24" r="19" fill="${m[1]}" stroke-width="2"/>${m[2]}${m[3]}${m[4]}</svg>`;
+const SYM=['Hot flashes','Night sweats','Sleep trouble'];
+let view=new Date();view.setDate(1);let yv=new Date().getFullYear(),cur=null;
+function periods(){const ks=Object.keys(D.days).filter(k=>D.days[k].p).sort();const st=[];let last=null;
+ for(const k of ks){const d=pk(k);if(!last||diff(last,d)>2)st.push({s:d,len:1});else st[st.length-1].len+=diff(last,d)<=1?1:diff(last,d);last=d}return st}
+function calc(){const st=periods(),cyc=[];for(let i=1;i<st.length;i++)cyc.push(diff(st[i-1].s,st[i].s));
+ const rc=cyc.slice(-6),avg=rc.length?Math.round(rc.reduce((a,b)=>a+b)/rc.length):28,pl=st.length?Math.round(st.slice(-6).reduce((a,b)=>a+b.len,0)/Math.min(6,st.length)):5;
+ let next=null,ov=null;if(st.length){next=addD(st[st.length-1].s,avg);const t=new Date();t.setHours(0,0,0,0);while(next<t)next=addD(next,avg);ov=addD(next,-14)}return{st,cyc,rc,avg,pl,next,ov}}
+function render(){const c=calc(),g=document.getElementById('grid');document.getElementById('mt').textContent=MN[view.getMonth()]+' '+view.getFullYear();
+ const pred=new Set(),fert=new Set();if(c.next){for(let r=0;r<3;r++){const n=addD(c.next,c.avg*r);for(let i=0;i<c.pl;i++)pred.add(key(addD(n,i)));for(let i=-5;i<=1;i++)fert.add(key(addD(n,i-14)))}}
+ let h=['S','M','T','W','T','F','S'].map(x=>`<div class="dow">${x}</div>`).join('');for(let i=0;i<view.getDay();i++)h+='<div class="day out"></div>';
+ const dim=new Date(view.getFullYear(),view.getMonth()+1,0).getDate(),tk=key(new Date());
+ for(let d=1;d<=dim;d++){const k=key(new Date(view.getFullYear(),view.getMonth(),d)),v=D.days[k]||{};let cl='day';
+  if(v.p)cl+=' p';else if(v.o)cl+=' o';else if(pred.has(k))cl+=' pred';if(!v.p&&fert.has(k))cl+=' fert';if(k===tk)cl+=' today';
+  let dots='';if(v.s)dots+='<i style="background:var(--pink);border:1px solid #fff"></i>';if(v.o&&v.p)dots+='<i style="background:var(--purple)"></i>';if(v.sym&&v.sym.length)dots+='<i style="background:#f4c96b"></i>';
+  h+=`<button class="${cl}" data-k="${k}">${d}<span class="dots">${dots}</span></button>`}
+ g.innerHTML=h;
+ const f=d=>d?MN[d.getMonth()].slice(0,3)+' '+d.getDate():'—';
+ document.getElementById('stats').innerHTML=`<div class="stat"><small>Next period</small><b id="nextp">${f(c.next)}</b></div><div class="stat"><small>Est. ovulation</small><b id="ovp">${f(c.ov)}</b></div><div class="stat"><small>Avg cycle</small><b id="avgc">${c.cyc.length?c.avg+' days':'—'}</b></div><div class="stat"><small>Avg period</small><b>${c.st.length?c.pl+' days':'—'}</b></div>`;
+ let n=[];if(!c.st.length)n.push('Tap a day to log your period. Predictions appear once you have logged one.');else if(!c.cyc.length)n.push('Log your next period too and averages will get smarter.');
+ if(c.rc.length>=3&&Math.max(...c.rc)-Math.min(...c.rc)>7)n.push('Your recent cycles vary by more than a week. That is common in your late 30s and 40s and can be an early sign of perimenopause.');
+ if(c.rc.some(x=>x<21))n.push('A recent cycle was shorter than 21 days.');if(c.rc.some(x=>x>35&&x<=60))n.push('A recent cycle was longer than 35 days.');if(c.rc.some(x=>x>60))n.push('Looks like a month may have been skipped. Skipped periods can happen during perimenopause.');
+ const s90=Object.entries(D.days).filter(([k,v])=>v.sym&&v.sym.length&&diff(pk(k),new Date())<=90).length;if(s90>=3)n.push(`You noted hot flashes, night sweats, or sleep trouble on ${s90} days lately. Worth mentioning at your next checkup.`);
+ if(n.length>1||c.rc.length>=3&&n.length)n.push('If anything feels off, a quick chat with your doctor can help.');
+ document.getElementById('notes').innerHTML=n.map(x=>`<div class="note">${x}</div>`).join('');
+ document.getElementById('yt').textContent=yv;let y='';for(let m=0;m<12;m++){const fd=new Date(yv,m,1).getDay(),dm=new Date(yv,m+1,0).getDate();let cells='<i style="visibility:hidden"></i>'.repeat(fd);
+  for(let d=1;d<=dm;d++){const v=D.days[key(new Date(yv,m,d))]||{};cells+=`<i style="${v.p?'background:var(--red)':v.o?'background:var(--purple)':v.s?'background:var(--pink)':''}"></i>`}y+=`<div class="ym">${MN[m].slice(0,3)}<div class="g">${cells}</div></div>`}
+ document.getElementById('yr').innerHTML=y}
+const sheet=document.getElementById('sheet');
+function open(k){cur=k;const v=D.days[k]||{},d=pk(k);document.getElementById('dt').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+ document.querySelectorAll('.tog button').forEach(b=>b.classList.toggle('on',!!v[b.dataset.k]));
+ document.getElementById('moods').innerHTML=MOODS.map(m=>`<button class="mood${v.mood===m[0]?' on':''}" data-m="${m[0]}">${face(m)}${m[0]}</button>`).join('');
+ document.getElementById('sym').innerHTML=SYM.map(s=>`<label><input type="checkbox" value="${s}" ${(v.sym||[]).includes(s)?'checked':''}> ${s}</label>`).join('');
+ document.getElementById('moodbox').style.display=v.p?'':'none';sheet.classList.add('on')}
+function upd(f){const v=D.days[cur]||{};f(v);if(!v.p)delete v.mood;if(v.sym&&!v.sym.length)delete v.sym;['p','o','s'].forEach(x=>{if(!v[x])delete v[x]});if(Object.keys(v).length)D.days[cur]=v;else delete D.days[cur];save();render()}
+document.getElementById('grid').onclick=e=>{const b=e.target.closest('.day[data-k]');if(b)open(b.dataset.k)};
+document.querySelector('.tog').onclick=e=>{const b=e.target.closest('button');if(!b)return;b.classList.toggle('on');const on=b.classList.contains('on');upd(v=>v[b.dataset.k]=on);if(b.dataset.k==='p')document.getElementById('moodbox').style.display=on?'':'none'};
+document.getElementById('moods').onclick=e=>{const b=e.target.closest('.mood');if(!b)return;const was=b.classList.contains('on');document.querySelectorAll('.mood').forEach(x=>x.classList.remove('on'));if(!was)b.classList.add('on');upd(v=>v.mood=was?undefined:b.dataset.m)};
+document.getElementById('sym').onchange=()=>upd(v=>v.sym=[...document.querySelectorAll('#sym input:checked')].map(i=>i.value));
+document.getElementById('clr').onclick=()=>{delete D.days[cur];save();render();sheet.classList.remove('on')};
+document.getElementById('done').onclick=()=>sheet.classList.remove('on');sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove('on')};
+document.getElementById('prev').onclick=()=>{view.setMonth(view.getMonth()-1);render()};document.getElementById('next').onclick=()=>{view.setMonth(view.getMonth()+1);render()};
+document.getElementById('yp').onclick=()=>{yv--;render()};document.getElementById('yn').onclick=()=>{yv++;render()};
+document.getElementById('bk').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));a.download='period-tracker-backup-'+key(new Date())+'.json';a.click();D.lastBackup=Date.now();save()};
+document.getElementById('rs').onclick=()=>document.getElementById('file').click();
+document.getElementById('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j.days)throw 0;if(confirm('Replace current data with this backup?')){D=j;save();render();alert('Backup restored!')}}catch(x){alert('That file does not look like a Period Tracker backup.')}e.target.value=''};
+let dp=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
+document.getElementById('inst').onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;dp=null}else document.getElementById('hint').style.display='block'};
+if(matchMedia('(display-mode: standalone)').matches)document.getElementById('inst').style.display='none';
+const hr=new Date().getHours();document.getElementById('greet').textContent=(hr<12?'Good morning':hr<18?'Good afternoon':'Good evening')+', Ashley';
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
+render();
+</script></body></html>
