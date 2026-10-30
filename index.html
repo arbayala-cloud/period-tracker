@@ -150,13 +150,13 @@ function render(){const c=calc(),g=document.getElementById('grid');document.getE
   for(let d=1;d<=dm;d++){const v=D.days[key(new Date(yv,m,d))]||{};cells+=`<i style="${v.p?'background:var(--red)':v.o?'background:var(--purple)':v.s?'background:var(--pink)':''}"></i>`}y+=`<div class="ym">${MN[m].slice(0,3)}<div class="g">${cells}</div></div>`}
  document.getElementById('yr').innerHTML=y}
 const sheet=document.getElementById('sheet');
-function open(k){cur=k;const v=D.days[k]||{},d=pk(k);document.getElementById('dt').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+function openDay(k){cur=k;const v=D.days[k]||{},d=pk(k);document.getElementById('dt').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
  document.querySelectorAll('.tog button').forEach(b=>b.classList.toggle('on',!!v[b.dataset.k]));
  document.getElementById('moods').innerHTML=MOODS.map(m=>`<button class="mood${v.mood===m[0]?' on':''}" data-m="${m[0]}">${face(m)}${m[0]}</button>`).join('');
  document.getElementById('sym').innerHTML=SYM.map(s=>`<label><input type="checkbox" value="${s}" ${(v.sym||[]).includes(s)?'checked':''}> ${s}</label>`).join('');
  document.getElementById('moodbox').style.display=v.p?'':'none';sheet.classList.add('on')}
 function upd(f){const v=D.days[cur]||{};f(v);if(!v.p)delete v.mood;if(v.sym&&!v.sym.length)delete v.sym;['p','o','s'].forEach(x=>{if(!v[x])delete v[x]});if(Object.keys(v).length)D.days[cur]=v;else delete D.days[cur];save();render()}
-document.getElementById('grid').onclick=e=>{const b=e.target.closest('.day[data-k]');if(b)open(b.dataset.k)};
+document.getElementById('grid').onclick=e=>{const b=e.target.closest('.day[data-k]');if(b)openDay(b.dataset.k)};
 document.querySelector('.tog').onclick=e=>{const b=e.target.closest('button');if(!b)return;b.classList.toggle('on');const on=b.classList.contains('on');upd(v=>v[b.dataset.k]=on);if(b.dataset.k==='p')document.getElementById('moodbox').style.display=on?'':'none'};
 document.getElementById('moods').onclick=e=>{const b=e.target.closest('.mood');if(!b)return;const was=b.classList.contains('on');document.querySelectorAll('.mood').forEach(x=>x.classList.remove('on'));if(!was)b.classList.add('on');upd(v=>v.mood=was?undefined:b.dataset.m)};
 document.getElementById('sym').onchange=()=>upd(v=>v.sym=[...document.querySelectorAll('#sym input:checked')].map(i=>i.value));
@@ -172,7 +172,7 @@ const setT=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('pt
 setT(document.documentElement.dataset.theme);document.getElementById('thm').onclick=e=>{const b=e.target.closest('[data-t]');if(b)setT(b.dataset.t)};
 
 const hr=new Date().getHours();document.getElementById('greet').textContent=(hr<12?'Good morning':hr<18?'Good afternoon':'Good evening')+', Ashley';
-const VER='pt-v7';document.getElementById('updmsg').textContent=VER;
+const VER='pt-v8';document.getElementById('updmsg').textContent=VER;
 async function doUpdate(){const m=document.getElementById('updmsg');m.textContent='Updating...';
  try{const r=await navigator.serviceWorker?.getRegistration();if(r){await r.update();if(r.waiting)r.waiting.postMessage('skip');if(r.installing)r.installing.postMessage('skip')}
  if(window.caches){for(const k of await caches.keys())await caches.delete(k)}
@@ -201,7 +201,7 @@ function readable(){const ks=Object.keys(D.days).sort(),L=['Period Tracker backu
  const pd=ks.filter(k=>D.days[k].p);if(pd.length){L.push('PERIOD DAYS');let run=[];pd.forEach((k,i)=>{run.push(k);const nx=pd[i+1];if(!nx||diff(pk(k),pk(nx))>1){L.push(pk(run[0]).toLocaleDateString()+(run.length>1?' to '+pk(run[run.length-1]).toLocaleDateString():''));run=[]}});L.push('')}
  L.push('To restore: open Period Tracker, tap Menu, Backup & Restore, and paste this whole email.','',MK,JSON.stringify(D),ME);return L.join('\n')}
 function done(){D.lastBackup=Date.now();ptSave();drawLast()}
-function drawLast(){$('bkLast').textContent=D.lastBackup?'Last backup: '+new Date(D.lastBackup).toLocaleDateString():'No backup yet.'}
+function drawLast(){const lb=+D.lastBackup,ld=new Date(lb);$('bkLast').textContent=lb>1e12&&!isNaN(ld)?'Last backup: '+ld.toLocaleDateString():'No backup yet.'}
 async function saveFile(){const f=new File([JSON.stringify(D,null,1)],fname(),{type:'application/json'});
  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Period Tracker backup'});done();return}}catch(e){if(e&&e.name==='AbortError')return}
  const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=fname();document.body.appendChild(a);a.click();a.remove();done()}
@@ -251,10 +251,10 @@ async function sync(first,interactive){if(!ON())return;if(busy){again=true;retur
  catch(e){if(e.message==='offline'||e instanceof TypeError)draw('Offline. Will sync when you are back online.');else $('syNote').style.display='block'}
  finally{busy=false;draw();if(again){again=false;ptLater()}}}
 window.ptSync=sync;
-function ago(t){if(!t)return'not yet';const m=Math.round((Date.now()-t)/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' hr ago':Math.round(m/1440)+' days ago'}
+function ago(t){t=+t;if(!t||!isFinite(t)||t>Date.now()+864e5)return'not yet';const m=Math.round((Date.now()-t)/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' hr ago':Math.round(m/1440)+' days ago'}
 function draw(msg){const on=ON(),em=LS.getItem(KS.em)||'your Google account',lt=+LS.getItem(KS.last)||0;
- $('syLbl').textContent=on?'Sync with Google':'Sign in with Google';$('syFoot').textContent=on?'Synced as '+em+' · Synced '+ago(lt):'';$('syFoot').style.display=on?'block':'none';
- $('syStat').textContent=msg||(on?'Signed in as '+em+'. Last synced '+ago(lt)+'.':'Not signed in. Your logs are only on this phone.');$('syOut').style.display=on?'none':'flex';$('syInRow').style.display=on?'flex':'none'}
+ $('syLbl').textContent=on?'Sync with Google':'Sign in with Google';$('syFoot').textContent=on?'Synced as '+em+(lt?' · Synced '+ago(lt):' · Not synced yet'):'';$('syFoot').style.display=on?'block':'none';
+ $('syStat').textContent=msg||(on?'Signed in as '+em+'. '+(lt?'Last synced '+ago(lt)+'.':'Not synced yet.'):'Not signed in. Your logs are only on this phone.');$('syOut').style.display=on?'none':'flex';$('syInRow').style.display=on?'flex':'none'}
 $('syIn').onclick=async()=>{draw('Opening Google sign-in...');try{await gis();await new Promise((ok,no)=>google.accounts.oauth2.initTokenClient({client_id:CID,scope:SCOPE,callback:r=>{if(r.access_token){tok=r.access_token;tokExp=Date.now()+(r.expires_in||3600)*1000;ok()}else no(new Error('denied'))},error_callback:()=>no(new Error('failed'))}).requestAccessToken({prompt:'select_account'}));
  const u=await(await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+tok}})).json();LS.setItem(KS.em,u.email||'');LS.setItem(KS.on,'1');LS.setItem(KS.snap,'{}');await sync(true)}catch(e){draw('Sign-in did not finish. Your logs are safe on this phone. Try again.')}};
 $('syNow').onclick=()=>sync(false,true);$('syNote').onclick=()=>sync(false,true);
