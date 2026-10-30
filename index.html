@@ -69,6 +69,7 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 .thm{display:flex;gap:6px;margin:4px 0 14px}.thm button{flex:1;padding:10px 4px;font-weight:700;background:#fff;color:#4a2a3d;border:2px solid transparent}.thm button.on{border-color:var(--rose)}
 .thm [data-t=dark]{background:#2a1830;color:#f1e4ec}.thm [data-t=fun]{background:linear-gradient(135deg,#ffd6e8,#fff1c9,#d9f2ff)}
 .mpanel{display:flex;flex-direction:column}.mpanel .credit{margin-top:auto}.credit{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.05rem;text-align:center;color:var(--plum);opacity:.85;padding-top:14px;letter-spacing:.02em}
+.mfoot{text-align:center;font-size:.72rem;color:var(--plum);opacity:.7;margin-top:6px;overflow-wrap:anywhere}.mfoot a{color:inherit}
 </style></head><body><div class="deco" style="top:8px;left:8px"><svg viewBox="0 0 40 40" width="44"><g fill="#ff9ec7"><circle cx="20" cy="10" r="7"/><circle cx="30" cy="18" r="7"/><circle cx="26" cy="30" r="7"/><circle cx="14" cy="30" r="7"/><circle cx="10" cy="18" r="7"/></g><circle cx="20" cy="21" r="5" fill="#ffd55e"/></svg></div><div class="deco" style="top:120px;right:-6px"><svg viewBox="0 0 24 24" width="30"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-3 7-10 13z" fill="#b98cff"/></svg></div><div class="deco" style="bottom:90px;left:-8px"><svg viewBox="0 0 40 40" width="56"><g fill="#a9d8ff"><circle cx="20" cy="10" r="7"/><circle cx="30" cy="18" r="7"/><circle cx="26" cy="30" r="7"/><circle cx="14" cy="30" r="7"/><circle cx="10" cy="18" r="7"/></g><circle cx="20" cy="21" r="5" fill="#ffd55e"/></svg></div><div class="deco" style="bottom:20px;right:14px"><svg viewBox="0 0 24 24" width="36"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-3 7-10 13z" fill="#ff7aa8"/></svg></div><div class="deco" style="top:46%;left:6px"><svg viewBox="0 0 24 24" width="18"><path d="M12 21C5 15 2 12 2 8a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-3 7-10 13z" fill="#ffc65e"/></svg></div><svg class="deco" style="inset:0;width:100%;height:100%;opacity:.5" viewBox="0 0 100 100" preserveAspectRatio="none"><g><rect x="12" y="16" width="2" height="1" fill="#ff5d9e" transform="rotate(30 12 16)"/><rect x="84" y="10" width="2" height="1" fill="#8a3ffc"/><rect x="70" y="60" width="2" height="1" fill="#33c3a8" transform="rotate(-25 70 60)"/><rect x="20" y="70" width="2" height="1" fill="#ffb020"/><rect x="92" y="40" width="2" height="1" fill="#ff5d9e" transform="rotate(60 92 40)"/><rect x="50" y="94" width="2" height="1" fill="#8a3ffc"/></g></svg><div class="wrap">
 <div class="top"><span style="width:40px"></span><h1>Period Tracker</h1><button class="nav" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button></div>
 <div class="sub" id="greet">Be gentle with yourself today</div>
@@ -78,11 +79,14 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 <div class="mini" id="mini"></div></div>
 </div>
 <div class="menu" id="menu"><div class="mpanel"><div class="ph"><h3>Menu</h3><button class="nav x" data-close aria-label="Close">&#215;</button></div><div class="lbl" style="margin-top:0">Theme</div><div class="thm" id="thm"><button data-t="light">Light</button><button data-t="dark">Dark</button><button data-t="fun">Fun</button></div>
-<button class="mi" data-open="pYear">Year View<span>&#8250;</span></button><button class="mi" data-open="pStats">My Cycle Stats<span>&#8250;</span></button><button class="mi" data-open="pNotes">Perimenopause Notes<span>&#8250;</span></button><button class="mi" data-open="pBackup">Backup &amp; Restore<span>&#8250;</span></button><button class="mi" data-open="pInstall">Install App<span>&#8250;</span></button><button class="mi" id="upd">Check for Updates<span id="updmsg" style="font-size:.8rem;font-weight:600"></span></button><button class="mi" data-open="pAbout">About<span>&#8250;</span></button><div class="credit">Designed by Ashley Ayala</div></div></div>
+<button class="mi" data-open="pYear">Year View<span>&#8250;</span></button><button class="mi" data-open="pStats">My Cycle Stats<span>&#8250;</span></button><button class="mi" data-open="pNotes">Perimenopause Notes<span>&#8250;</span></button><button class="mi" data-open="pSync"><b id="syLbl" style="font-weight:600">Sign in with Google</b><span>&#8250;</span></button><button class="mi" data-open="pBackup">Backup &amp; Restore<span>&#8250;</span></button><button class="mi" data-open="pInstall">Install App<span>&#8250;</span></button><button class="mi" id="upd">Check for Updates<span id="updmsg" style="font-size:.8rem;font-weight:600"></span></button><button class="mi" data-open="pAbout">About<span>&#8250;</span></button><div class="credit">Designed by Ashley Ayala</div><div class="mfoot"><a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></div><div class="mfoot" id="syFoot" style="display:none"></div></div></div>
 <div class="page" id="pYear"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Year View</h3><span style="width:40px"></span></div><div class="card"><div class="mh"><button class="nav" id="yp">&#8249;</button><h2 id="yt"></h2><button class="nav" id="yn">&#8250;</button></div><div class="yr" id="yr" style="margin-top:10px"></div></div></div>
 <div class="page" id="pStats"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>My Cycle Stats</h3><span style="width:40px"></span></div><div class="card"><div class="stats" id="stats"></div></div></div>
 <div class="page" id="pNotes"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Perimenopause Notes</h3><span style="width:40px"></span></div><div class="card"><div id="notes"></div><div class="tiny">Gentle notes based on your logs. Use the checkboxes on any day for hot flashes, night sweats, or sleep trouble.</div></div></div>
-<div class="page" id="pBackup"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Backup &amp; Restore</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="bk">Backup</button><button class="btn alt" id="rs">Restore</button><input type="file" id="file" accept=".json,application/json" hidden></div><div class="tiny">Your data stays on this phone only. Tap Backup now and then and keep the file somewhere safe. Restore brings it back on any phone.</div></div></div>
+<div class="page" id="pBackup"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Backup &amp; Restore</h3><span style="width:40px"></span></div><div class="card"><div class="lbl" style="margin-top:0">Back Up My Saves</div><div class="row"><button class="btn" id="bkMail">Email backup to me</button></div><div class="row" style="margin-top:8px"><button class="btn alt" id="bk">Save backup file</button><button class="btn alt" id="bkCopy">Copy backup text</button></div><div class="tiny" id="bkLast"></div></div>
+<div class="card"><div class="lbl" style="margin-top:0">Restore</div><div class="row"><button class="btn alt" id="rs">Choose backup file</button><input type="file" id="file" accept=".json,application/json,text/plain" hidden></div><textarea id="rsTxt" placeholder="Or paste the whole backup email here" style="width:100%;box-sizing:border-box;min-height:110px;margin-top:10px;border-radius:14px;border:2px solid var(--blush);padding:10px;font:inherit;font-size:.9rem;background:transparent;color:var(--ink)"></textarea><div class="row" style="margin-top:8px"><button class="btn alt" id="rsGo">Restore pasted text</button></div><div class="tiny" id="rsMsg">Restoring only adds what is missing. Nothing you have now gets deleted.</div></div></div>
+<div class="page" id="pSync"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Sync with Google</h3><span style="width:40px"></span></div><div class="card"><p style="margin:0 0 10px;font-size:.92rem">Keeps your logs safe in a private app-only folder in your own Google Drive, and the same on every phone you sign in on. Nothing is deleted when syncing.</p><div id="syStat" style="font-weight:600;text-align:center;margin:8px 0 12px"></div><div class="row" id="syOut"><button class="btn" id="syIn">Sign in with Google</button></div><div class="row" id="syInRow" style="display:none"><button class="btn" id="syNow">Sync now</button><button class="btn alt" id="syOff">Sign out</button></div><div class="tiny">Your logs stay on this phone too, so the app works offline.</div></div></div>
+<button id="syNote" type="button" style="display:none;position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:12;background:var(--rose);color:#fff;padding:8px 16px;border-radius:999px;font-weight:700;font-size:.8rem;box-shadow:0 4px 14px #0003;flex:none">Tap to reconnect sync</button>
 <div class="page" id="pInstall"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>Install App</h3><span style="width:40px"></span></div><div class="card"><div class="row"><button class="btn" id="inst">Install App</button></div><div id="already" style="display:none;text-align:center;margin-top:12px;font-size:.9rem">It looks like Period Tracker is already installed on this phone. You are all set.</div><div id="hint">On Android Chrome: tap the &#8942; menu, then "Add to Home screen" or "Install app".</div></div></div>
 <div class="page" id="pAbout"><div class="ph"><button class="nav" data-back aria-label="Back">&#8249;</button><h3>About</h3><span style="width:40px"></span></div><div class="card"><p style="margin:0;font-size:.92rem">Your personal Period Tracker. Just for personal tracking, not medical advice. Talk with your doctor about any concerns.</p><div class="credit">Designed by Ashley Ayala</div></div></div>
 <div id="banner" style="display:none;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:11;background:var(--rose);color:#fff;padding:10px 18px;border-radius:999px;font-weight:700;box-shadow:0 6px 18px #0003;cursor:pointer">Update available, tap to refresh</div><div class="sheet" id="sheet"><div class="panel"><h3 id="dt"></h3>
@@ -92,7 +96,7 @@ button{font-family:inherit;cursor:pointer;border:none;border-radius:14px}
 <div class="row" style="margin-top:16px"><button class="btn alt" id="clr">Clear day</button><button class="btn" id="done">Done</button></div></div></div>
 <script>
 const K='pt-data-v1';let D=JSON.parse(localStorage.getItem(K)||'{"days":{}}');D.days=D.days||{};
-const save=()=>localStorage.setItem(K,JSON.stringify(D));
+const save=()=>ptSave();
 const pad=n=>String(n).padStart(2,'0'),key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const pk=s=>{const[a,b,c]=s.split('-');return new Date(a,b-1,c)},addD=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n),diff=(a,b)=>Math.round((b-a)/864e5);
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -160,9 +164,6 @@ document.getElementById('clr').onclick=()=>{delete D.days[cur];save();render();s
 document.getElementById('done').onclick=()=>sheet.classList.remove('on');sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove('on')};
 document.getElementById('prev').onclick=()=>{view.setMonth(view.getMonth()-1);render()};document.getElementById('next').onclick=()=>{view.setMonth(view.getMonth()+1);render()};
 document.getElementById('yp').onclick=()=>{yv--;render()};document.getElementById('yn').onclick=()=>{yv++;render()};
-document.getElementById('bk').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));a.download='period-tracker-backup-'+key(new Date())+'.json';a.click();D.lastBackup=Date.now();save()};
-document.getElementById('rs').onclick=()=>document.getElementById('file').click();
-document.getElementById('file').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j.days)throw 0;if(confirm('Replace current data with this backup?')){D=j;save();render();alert('Backup restored!')}}catch(x){alert('That file does not look like a Period Tracker backup.')}e.target.value=''};
 let dp=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e});
 const inApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone;addEventListener('appinstalled',()=>localStorage.setItem('pt-installed','1'));
 document.getElementById('inst').onclick=async()=>{const h=document.getElementById('hint'),al=document.getElementById('already');h.style.display=al.style.display='none';
@@ -171,7 +172,7 @@ const setT=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('pt
 setT(document.documentElement.dataset.theme);document.getElementById('thm').onclick=e=>{const b=e.target.closest('[data-t]');if(b)setT(b.dataset.t)};
 
 const hr=new Date().getHours();document.getElementById('greet').textContent=(hr<12?'Good morning':hr<18?'Good afternoon':'Good evening')+', Ashley';
-const VER='pt-v6';document.getElementById('updmsg').textContent=VER;
+const VER='pt-v7';document.getElementById('updmsg').textContent=VER;
 async function doUpdate(){const m=document.getElementById('updmsg');m.textContent='Updating...';
  try{const r=await navigator.serviceWorker?.getRegistration();if(r){await r.update();if(r.waiting)r.waiting.postMessage('skip');if(r.installing)r.installing.postMessage('skip')}
  if(window.caches){for(const k of await caches.keys())await caches.delete(k)}
@@ -179,10 +180,88 @@ async function doUpdate(){const m=document.getElementById('updmsg');m.textConten
  if(lv&&lv!==VER){m.textContent='Updating to '+lv+'...';setTimeout(()=>location.reload(),600)}else{m.textContent="You're on the latest version ("+VER+")";setTimeout(()=>location.reload(),1500)}}
  catch(e){m.textContent='Could not check right now'}}
 document.getElementById('upd').onclick=doUpdate;document.getElementById('banner').onclick=doUpdate;
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(r=>{const show=()=>{if(navigator.serviceWorker.controller)document.getElementById('banner').style.display='block'};if(r.waiting)show();r.addEventListener('updatefound',()=>{const w=r.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed')show()})})})}
+if('serviceWorker' in navigator){const hadC=!!navigator.serviceWorker.controller;let rl=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadC&&!rl){rl=true;location.reload()}});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')navigator.serviceWorker.getRegistration().then(r=>r&&r.update()).catch(()=>{})});navigator.serviceWorker.register('sw.js').then(r=>{const show=()=>{if(navigator.serviceWorker.controller)document.getElementById('banner').style.display='block'};if(r.waiting)show();r.addEventListener('updatefound',()=>{const w=r.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed')show()})})})}
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
 const menu=document.getElementById('menu');document.getElementById('menuBtn').onclick=()=>menu.classList.add('on');
 menu.onclick=e=>{if(e.target===menu||e.target.closest('[data-close]'))menu.classList.remove('on');const o=e.target.closest('[data-open]');if(o){menu.classList.remove('on');document.getElementById(o.dataset.open).classList.add('on')}};
 document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>{b.closest('.page').classList.remove('on');menu.classList.add('on')});
+// ---- Data protection: safe save, IndexedDB copy, sync with Google ----
+var ptIDB=null,ptWarned=false,ptApplying=false;
+try{const q=indexedDB.open('period-tracker',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{ptIDB=q.result;ptIdbLoad()}}catch(e){}
+try{if(localStorage.getItem(K)&&!localStorage.getItem('pt-premigrate-backup'))localStorage.setItem('pt-premigrate-backup',localStorage.getItem(K))}catch(e){}
+function ptIdbPut(){try{ptIDB&&ptIDB.transaction('kv','readwrite').objectStore('kv').put(JSON.parse(JSON.stringify(D)),'data')}catch(e){}}
+function ptIdbLoad(){if(localStorage.getItem(K)!==null){ptIdbPut();return}try{const r=ptIDB.transaction('kv','readonly').objectStore('kv').get('data');r.onsuccess=()=>{const v=r.result;if(v&&v.days&&Object.keys(v.days).length){D=v;D.days=D.days||{};ptSave();render()}}}catch(e){}}
+function ptSave(){if(!ptApplying&&typeof cur!=='undefined'&&cur){D.mt=D.mt||{};D.mt[cur]=Date.now()}
+ const j=JSON.stringify(D);try{localStorage.setItem(K,j)}catch(e){if(!ptWarned){ptWarned=true;alert('Phone storage is full. Your logs are kept in backup storage, but please make a backup soon.')}}
+ ptIdbPut();if(!ptApplying&&window.ptLater)ptLater()}
+// ---- Backup ----
+(function(){const $=id=>document.getElementById(id),MK='-----BEGIN PERIOD TRACKER BACKUP-----',ME='-----END PERIOD TRACKER BACKUP-----';
+const fname=()=>'period-tracker-backup-'+key(new Date())+'.json';
+function readable(){const ks=Object.keys(D.days).sort(),L=['Period Tracker backup, '+new Date().toLocaleString(),ks.length+' logged days',''];
+ const pd=ks.filter(k=>D.days[k].p);if(pd.length){L.push('PERIOD DAYS');let run=[];pd.forEach((k,i)=>{run.push(k);const nx=pd[i+1];if(!nx||diff(pk(k),pk(nx))>1){L.push(pk(run[0]).toLocaleDateString()+(run.length>1?' to '+pk(run[run.length-1]).toLocaleDateString():''));run=[]}});L.push('')}
+ L.push('To restore: open Period Tracker, tap Menu, Backup & Restore, and paste this whole email.','',MK,JSON.stringify(D),ME);return L.join('\n')}
+function done(){D.lastBackup=Date.now();ptSave();drawLast()}
+function drawLast(){$('bkLast').textContent=D.lastBackup?'Last backup: '+new Date(D.lastBackup).toLocaleDateString():'No backup yet.'}
+async function saveFile(){const f=new File([JSON.stringify(D,null,1)],fname(),{type:'application/json'});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Period Tracker backup'});done();return}}catch(e){if(e&&e.name==='AbortError')return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=fname();document.body.appendChild(a);a.click();a.remove();done()}
+window.ptMailURL=()=>{const to=localStorage.getItem('np.myemail')||localStorage.getItem('pt-sync-email')||'';return 'mailto:'+encodeURIComponent(to)+'?subject='+encodeURIComponent('Period Tracker backup '+new Date().toLocaleDateString())+'&body='+encodeURIComponent(readable())};
+$('bkMail').onclick=()=>{const u=ptMailURL();if(u.length<=8000){done();location.href=u}else{alert('Too much to fit in an email link, so saving it as a file instead.');saveFile()}};
+$('bk').onclick=saveFile;
+$('bkCopy').onclick=async()=>{try{await navigator.clipboard.writeText(readable());done();$('bkLast').textContent='Copied. Paste it into an email or note.'}catch(e){$('bkLast').textContent='Could not copy.'}};
+function parse(t){t=String(t||'');const a=t.indexOf(MK),z=t.indexOf(ME);if(a>=0&&z>a)t=t.slice(a+MK.length,z);else{const i=t.indexOf('{'),j=t.lastIndexOf('}');if(i<0||j<i)throw 0;t=t.slice(i,j+1)}
+ const d=JSON.parse(t.replace(/[\r\n]+/g,'').trim());if(!d||!d.days)throw 0;return d}
+window.ptMerge=d=>{let n=0;Object.entries(d.days||{}).forEach(([k,v])=>{const c=D.days[k];if(!c){D.days[k]=v;n++;return}let ch=false;
+  ['p','o','s'].forEach(x=>{if(v[x]&&!c[x]){c[x]=v[x];ch=true}});if(v.mood&&!c.mood){c.mood=v.mood;ch=true}
+  if(Array.isArray(v.sym)){c.sym=c.sym||[];v.sym.forEach(y=>{if(!c.sym.includes(y)){c.sym.push(y);ch=true}})}
+  Object.keys(v).forEach(x=>{if(!(x in c)){c[x]=v[x];ch=true}});if(ch)n++});
+ const ap=ptApplying;ptApplying=true;ptSave();ptApplying=ap;render();if(window.ptLater)ptLater();return n};
+function doRestore(t){try{const n=ptMerge(parse(t));$('rsMsg').textContent=n?'Restored '+n+' day'+(n===1?'':'s')+'. Nothing was deleted.':'Everything in that backup is already here. Nothing changed.'}catch(e){$('rsMsg').textContent='That does not look like a Period Tracker backup. Paste the whole email, or choose the .json file.'}}
+$('rs').onclick=()=>$('file').click();
+$('file').onchange=async e=>{const f=e.target.files[0];if(f)doRestore(await f.text());e.target.value=''};
+$('rsGo').onclick=()=>doRestore($('rsTxt').value);drawLast();
+})();
+// ---- Sync with Google (Drive app-only folder) ----
+(function(){const $=id=>document.getElementById(id),LS=localStorage;
+const CID='844979369291-3008v3sv7o2tv9ktuj8dccvd0khjdneh.apps.googleusercontent.com',SCOPE='https://www.googleapis.com/auth/drive.appdata openid email',FN='period-tracker-sync.json';
+const KS={on:'pt-sync-on',em:'pt-sync-email',last:'pt-sync-last',snap:'pt-sync-snap',fid:'pt-sync-fid'};
+let tok=null,tokExp=0,busy=false,again=false,deb=null,gisP=null;const ON=()=>LS.getItem(KS.on)==='1';
+window.ptLater=()=>{if(!ON())return;clearTimeout(deb);deb=setTimeout(()=>sync(false),4000)};
+function gis(){return gisP||(gisP=new Promise((ok,no)=>{if(window.google&&google.accounts&&google.accounts.oauth2)return ok();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.async=1;s.onload=()=>ok();s.onerror=()=>{gisP=null;no(new Error('offline'))};document.head.appendChild(s)}))}
+async function token(interactive){if(tok&&Date.now()<tokExp-60000)return tok;await gis();
+ return new Promise((ok,no)=>{const t=setTimeout(()=>no(new Error('timeout')),interactive?120000:15000);
+  google.accounts.oauth2.initTokenClient({client_id:CID,scope:SCOPE,login_hint:LS.getItem(KS.em)||undefined,callback:r=>{clearTimeout(t);if(r&&r.access_token){tok=r.access_token;tokExp=Date.now()+(r.expires_in||3600)*1000;ok(tok)}else no(new Error('denied'))},error_callback:e=>{clearTimeout(t);no(new Error('failed'))}}).requestAccessToken({prompt:''})})}
+async function api(u,o={}){const t=await token(false);const r=await fetch(u,{...o,headers:{...(o.headers||{}),Authorization:'Bearer '+t}});if(r.status===401){tok=null;throw new Error('auth')}if(!r.ok&&r.status!==404)throw new Error('http');return r}
+const DR='https://www.googleapis.com/drive/v3/files',UP='https://www.googleapis.com/upload/drive/v3/files';
+async function findFile(){let id=LS.getItem(KS.fid);if(id)return id;const r=await(await api(DR+'?spaces=appDataFolder&fields=files(id)&q='+encodeURIComponent("name='"+FN+"'"))).json();id=r.files&&r.files[0]&&r.files[0].id;if(id)LS.setItem(KS.fid,id);return id||null}
+async function download(id){const r=await api(DR+'/'+id+'?alt=media');if(r.status===404){LS.removeItem(KS.fid);return null}return r.json()}
+async function upload(id,body){const j=JSON.stringify(body);if(id){const r=await api(UP+'/'+id+'?uploadType=media',{method:'PATCH',headers:{'Content-Type':'application/json'},body:j});if(r.status!==404)return id;LS.removeItem(KS.fid)}
+ const b='ptsync'+Date.now(),mp='--'+b+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+JSON.stringify({name:FN,parents:['appDataFolder']})+'\r\n--'+b+'\r\nContent-Type: application/json\r\n\r\n'+j+'\r\n--'+b+'--';
+ const r=await(await api(UP+'?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+b},body:mp})).json();LS.setItem(KS.fid,r.id);return r.id}
+// merge: add remote days this phone didn't deliberately remove; newer edit wins; small deliberate removals elsewhere carry over
+window.ptSyncMerge=(L,R,S)=>{const out=JSON.parse(JSON.stringify(L));out.days=out.days||{};out.mt=out.mt||{};const lm=L.mt||{},rm=R.mt||{};let n=0;
+ Object.entries(R.days||{}).forEach(([k,v])=>{if(!(k in out.days)){if(!S[k]){out.days[k]=v;if(rm[k])out.mt[k]=rm[k];n++}}else if((rm[k]||0)>(lm[k]||0)&&JSON.stringify(v)!==JSON.stringify(out.days[k])){out.days[k]=v;out.mt[k]=rm[k];n++}});
+ const gone=Object.keys(out.days).filter(k=>S[k]&&!(k in (R.days||{}))&&!((lm[k]||0)>(R.saved||0)));if(Object.keys(R.days||{}).length&&gone.length&&gone.length<=10){gone.forEach(k=>delete out.days[k]);n+=gone.length}
+ Object.keys(R).forEach(x=>{if(!(x in out))out[x]=R[x]});return [out,n]};
+async function sync(first,interactive){if(!ON())return;if(busy){again=true;return}busy=true;draw('Syncing...');
+ try{if(interactive)await token(true);let id=await findFile();let remote=id?await download(id):null;if(id&&!remote)id=null;
+  let S={};try{S=JSON.parse(LS.getItem(KS.snap)||'{}')}catch(e){}let n=0,M=D;
+  if(remote&&remote.days){[M,n]=ptSyncMerge(D,remote,S);if(n){ptApplying=true;D=M;ptSave();ptApplying=false;render()}}
+  await upload(id,{...D,saved:Date.now()});LS.setItem(KS.snap,JSON.stringify(Object.fromEntries(Object.keys(D.days).map(k=>[k,1]))));LS.setItem(KS.last,Date.now());$('syNote').style.display='none'}
+ catch(e){if(e.message==='offline'||e instanceof TypeError)draw('Offline. Will sync when you are back online.');else $('syNote').style.display='block'}
+ finally{busy=false;draw();if(again){again=false;ptLater()}}}
+window.ptSync=sync;
+function ago(t){if(!t)return'not yet';const m=Math.round((Date.now()-t)/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' hr ago':Math.round(m/1440)+' days ago'}
+function draw(msg){const on=ON(),em=LS.getItem(KS.em)||'your Google account',lt=+LS.getItem(KS.last)||0;
+ $('syLbl').textContent=on?'Sync with Google':'Sign in with Google';$('syFoot').textContent=on?'Synced as '+em+' · Synced '+ago(lt):'';$('syFoot').style.display=on?'block':'none';
+ $('syStat').textContent=msg||(on?'Signed in as '+em+'. Last synced '+ago(lt)+'.':'Not signed in. Your logs are only on this phone.');$('syOut').style.display=on?'none':'flex';$('syInRow').style.display=on?'flex':'none'}
+$('syIn').onclick=async()=>{draw('Opening Google sign-in...');try{await gis();await new Promise((ok,no)=>google.accounts.oauth2.initTokenClient({client_id:CID,scope:SCOPE,callback:r=>{if(r.access_token){tok=r.access_token;tokExp=Date.now()+(r.expires_in||3600)*1000;ok()}else no(new Error('denied'))},error_callback:()=>no(new Error('failed'))}).requestAccessToken({prompt:'select_account'}));
+ const u=await(await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+tok}})).json();LS.setItem(KS.em,u.email||'');LS.setItem(KS.on,'1');LS.setItem(KS.snap,'{}');await sync(true)}catch(e){draw('Sign-in did not finish. Your logs are safe on this phone. Try again.')}};
+$('syNow').onclick=()=>sync(false,true);$('syNote').onclick=()=>sync(false,true);
+$('syOff').onclick=()=>{if(!confirm('Sign out of sync? Your logs stay on this phone.'))return;try{tok&&google.accounts.oauth2.revoke(tok,()=>{})}catch(e){}tok=null;Object.values(KS).forEach(k=>LS.removeItem(k));$('syNote').style.display='none';draw()};
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')sync(false);else if(deb){clearTimeout(deb);deb=null;sync(false)}});
+addEventListener('online',()=>sync(false));setInterval(()=>draw(),60000);draw();if(ON())setTimeout(()=>sync(true),1500);
+})();
+
 render();
 </script></body></html>
